@@ -3,10 +3,32 @@
 # -- Project information -----------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#project-information
 
+import os
+import sys
+from pathlib import Path
+
+# Ensure local package (src/) is importable when building on ReadTheDocs
+ROOT = Path(__file__).resolve().parents[1]
+SRC = ROOT / "src"
+if SRC.exists():
+    sys.path.insert(0, str(SRC))
+
 project = 'SubscriptionKore'
 copyright = '2025, InnerKore Team'
 author = 'InnerKore Team'
-release = '0.1.0'
+
+# Use the project version from pyproject.toml when available
+try:
+    import tomllib
+    pyproject = ROOT / "pyproject.toml"
+    if pyproject.exists():
+        with pyproject.open("rb") as f:
+            data = tomllib.load(f)
+            release = data.get("project", {}).get("version", "0.0.0")
+    else:
+        release = "0.0.0"
+except Exception:
+    release = "0.0.0"
 
 # -- General configuration ---------------------------------------------------
 # https://www.sphinx-doc.org/en/master/usage/configuration.html#general-configuration

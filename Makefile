@@ -42,35 +42,35 @@ publish: build ## Publish to PyPI
 	python -m twine upload dist/*
 
 bump-patch: ## Bump patch version (e.g., 0.1.0 -> 0.1.1)
-	@CURRENT_VERSION=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/') && \
+	@CURRENT_VERSION=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/' | head -1) && \
 	MAJOR=$$(echo $$CURRENT_VERSION | cut -d. -f1) && \
 	MINOR=$$(echo $$CURRENT_VERSION | cut -d. -f2) && \
 	PATCH=$$(echo $$CURRENT_VERSION | cut -d. -f3) && \
 	NEW_PATCH=$$(echo $$PATCH + 1 | bc) && \
 	NEW_VERSION="$$MAJOR.$$MINOR.$$NEW_PATCH" && \
 	echo "Current version: $$CURRENT_VERSION" && \
-	sed -i.bak "s/version = \".*\"/version = \"$$NEW_VERSION\"/" pyproject.toml && \
+	sed -i.bak '/^\[project\]/,/^version = / { s/version = ".*"/version = "'"$$NEW_VERSION"'"/; }' pyproject.toml && \
 	rm pyproject.toml.bak && \
 	echo "New version: $$NEW_VERSION"
 
 bump-minor: ## Bump minor version (e.g., 0.1.0 -> 0.2.0)
-	@CURRENT_VERSION=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/') && \
+	@CURRENT_VERSION=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/' | head -1) && \
 	MAJOR=$$(echo $$CURRENT_VERSION | cut -d. -f1) && \
 	MINOR=$$(echo $$CURRENT_VERSION | cut -d. -f2) && \
 	NEW_MINOR=$$(echo $$MINOR + 1 | bc) && \
 	NEW_VERSION="$$MAJOR.$$NEW_MINOR.0" && \
 	echo "Current version: $$CURRENT_VERSION" && \
-	sed -i.bak "s/version = \".*\"/version = \"$$NEW_VERSION\"/" pyproject.toml && \
+	sed -i.bak '/^\[project\]/,/^version = / { s/version = ".*"/version = "'"$$NEW_VERSION"'"/; }' pyproject.toml && \
 	rm pyproject.toml.bak && \
 	echo "New version: $$NEW_VERSION"
 
 bump-major: ## Bump major version (e.g., 0.1.0 -> 1.0.0)
-	@CURRENT_VERSION=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/') && \
+	@CURRENT_VERSION=$$(grep '^version = ' pyproject.toml | sed 's/version = "\(.*\)"/\1/' | head -1) && \
 	MAJOR=$$(echo $$CURRENT_VERSION | cut -d. -f1) && \
 	NEW_MAJOR=$$(echo $$MAJOR + 1 | bc) && \
 	NEW_VERSION="$$NEW_MAJOR.0.0" && \
 	echo "Current version: $$CURRENT_VERSION" && \
-	sed -i.bak "s/version = \".*\"/version = \"$$NEW_VERSION\"/" pyproject.toml && \
+	sed -i.bak '/^\[project\]/,/^version = / { s/version = ".*"/version = "'"$$NEW_VERSION"'"/; }' pyproject.toml && \
 	rm pyproject.toml.bak && \
 	echo "New version: $$NEW_VERSION"
 
