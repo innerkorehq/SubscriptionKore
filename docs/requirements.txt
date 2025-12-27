@@ -1,3 +1,16 @@
 sphinx>=7.0.0
 sphinx-press-theme>=0.8.0
 myst-parser>=2.0.0
+
+# Minimal runtime requirements so RTD can import subscriptionkore modules used by autodoc
+pydantic>=2.0.0
+pydantic-settings>=2.0.0
+httpx>=0.27.0
+tenacity>=8.2.0
+structlog>=24.0.0
+python-ulid>=2.0.0
+sqlalchemy[asyncio]>=2.0.0
+# Optional (uncomment if adapters need them during import-time)
+# stripe>=8.0.0
+# paddle-billing>=1.0.0
+# chargebee>=2.0.0
