@@ -198,8 +198,8 @@ class SubscriptionKore:
 
         return decorator
 
-    async def get_subscriptionkore_manager(self) -> SubscriptionManager:
-        """Get a subscriptionkore manager instance."""
+    async def get_subscription_manager(self) -> SubscriptionManager:
+        """Get a subscription manager instance (legacy name)."""
         session = self._get_session()
         return SubscriptionManager(
             subscriptionkore_repo=SQLAlchemySubscriptionRepository(session),
@@ -251,8 +251,8 @@ class SubscriptionKore:
 
     @property
     async def subscriptionkores(self) -> SubscriptionManager:
-        """Shortcut to get subscriptionkore manager."""
-        return await self.get_subscriptionkore_manager()
+        """Shortcut to get subscription manager (keeps legacy property name)."""
+        return await self.get_subscription_manager()
 
     @property
     async def customers(self) -> CustomerManager:

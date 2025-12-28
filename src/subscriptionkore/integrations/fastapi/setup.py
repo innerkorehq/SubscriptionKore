@@ -23,8 +23,8 @@ if TYPE_CHECKING:
     from fastapi import FastAPI
 
 
-class SubscriptionKoreState:
-    """Holds SubscriptionKore runtime state."""
+class SubscriptioState:
+    """Holds SubscriptionKore runtime state (legacy name `SubscriptioState`)."""
 
     def __init__(self) -> None:
         self.config: SubscriptionKoreConfig | None = None
@@ -43,19 +43,19 @@ class SubscriptionKoreState:
 
 
 # Global state - will be attached to FastAPI app
-_state: SubscriptionKoreState | None = None
+_state: SubscriptioState | None = None
 
 
-def get_state() -> SubscriptionKoreState:
+def get_state() -> SubscriptioState:
     """Get global state."""
     if _state is None:
         raise RuntimeError("SubscriptionKore not initialized.  Call setup_subscriptionkore first.")
     return _state
 
 
-async def _initialize(config: SubscriptionKoreConfig) -> SubscriptionKoreState:
+async def _initialize(config: SubscriptionKoreConfig) -> SubscriptioState:
     """Initialize SubscriptionKore components."""
-    state = SubscriptionKoreState()
+    state = SubscriptioState()
     state.config = config
 
     # Create database engine
@@ -101,7 +101,7 @@ async def _initialize(config: SubscriptionKoreConfig) -> SubscriptionKoreState:
     return state
 
 
-async def _shutdown(state: SubscriptionKoreState) -> None:
+async def _shutdown(state: SubscriptioState) -> None:
     """Shutdown SubscriptionKore components."""
     # Close provider connections
     for provider in state.providers.values():
@@ -117,7 +117,7 @@ async def _shutdown(state: SubscriptionKoreState) -> None:
         await state.engine.dispose()
 
 
-def setup_subscriptionkore(app: "FastAPI", config: SubscriptionKoreConfig) -> SubscriptionKoreState:
+def setup_subscriptionkore(app: "FastAPI", config: SubscriptionKoreConfig) -> SubscriptioState:
     """
     Setup SubscriptionKore with a FastAPI application.
 
@@ -126,7 +126,7 @@ def setup_subscriptionkore(app: "FastAPI", config: SubscriptionKoreConfig) -> Su
         config:  SubscriptionKore configuration
 
     Returns:
-        SubscriptionKoreState instance
+        SubscriptioState instance
 
     Example:
         ```python
@@ -174,6 +174,6 @@ def setup_subscriptionkore(app: "FastAPI", config: SubscriptionKoreConfig) -> Su
         app.router.lifespan_context = lifespan
 
     # Return a placeholder state that will be populated on startup
-    state = SubscriptionKoreState()
+    state = SubscriptioState()
     state.config = config
     return state

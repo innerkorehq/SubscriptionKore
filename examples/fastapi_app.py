@@ -11,7 +11,7 @@ from subscriptionkore import (
 )
 from subscriptionkore.config import StripeConfig
 from subscriptionkore.core.exceptions import EntityNotFoundError
-from subscriptionkore.integrations. fastapi import (
+from subscriptionkore.integrations.fastapi import (
     create_webhook_router,
     get_customer_manager,
     get_entitlement_service,
@@ -131,10 +131,10 @@ class EntitlementListResponse(BaseModel):
 
 
 # Startup event to register domain event handlers
-@app. on_event("startup")
+@app.on_event("startup")
 async def register_event_handlers() -> None:
     """Register domain event handlers on startup."""
-    from subscriptio.integrations.fastapi. setup import get_state
+    from subscriptionkore.integrations.fastapi.setup import get_state
     
     # Wait a moment for subscriptio to initialize
     import asyncio
@@ -442,7 +442,7 @@ async def check_entitlement(
     entitlements: EntitlementService = Depends(get_entitlement_service),
 ) -> EntitlementCheckResponse:
     """Check a specific entitlement for a customer."""
-    from subscriptio.core.exceptions import EntitlementNotFoundError
+    from subscriptionkore.core.exceptions import EntitlementNotFoundError
     
     try:
         ent = await entitlements.check(customer_id, entitlement_key)
@@ -477,7 +477,7 @@ async def grant_entitlement_override(
 ) -> EntitlementCheckResponse: 
     """Grant an entitlement override to a customer."""
     from datetime import datetime, timedelta
-    from subscriptio.core.exceptions import EntitlementNotFoundError
+    from subscriptionkore.core.exceptions import EntitlementNotFoundError
     
     expires_at = None
     if request. expires_in_days:

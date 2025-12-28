@@ -75,7 +75,7 @@ async def get_provider(
     return provider
 
 
-async def get_subscriptionkore_manager(
+async def get_subscription_manager(
     session: Annotated[AsyncSession, Depends(get_db_session)],
     request: Request,
 ) -> SubscriptionManager:
